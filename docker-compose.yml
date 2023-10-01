@@ -1,0 +1,35 @@
+version: '3'
+
+volumes:
+  pg_data:
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: linaart
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: reksoft
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: reksoft
+      DB_USER: linaart
+      DB_PASSWORD: 123456
+
+  gateway:
+    build: ./nginx/
+    depends_on:
+      - backend
+    ports:
+      - 8001:80

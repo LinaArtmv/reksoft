@@ -1,0 +1,171 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.0 (Debian 16.0-1.pgdg120+1)
+-- Dumped by pg_dump version 16.0 (Debian 16.0-1.pgdg120+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: resource_types; Type: TABLE; Schema: public; Owner: linaart
+--
+
+CREATE TABLE public.resource_types (
+    id integer NOT NULL,
+    name text NOT NULL,
+    max_speed numeric NOT NULL
+);
+
+
+ALTER TABLE public.resource_types OWNER TO linaart;
+
+--
+-- Name: resource_types_id_seq; Type: SEQUENCE; Schema: public; Owner: linaart
+--
+
+CREATE SEQUENCE public.resource_types_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.resource_types_id_seq OWNER TO linaart;
+
+--
+-- Name: resource_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: linaart
+--
+
+ALTER SEQUENCE public.resource_types_id_seq OWNED BY public.resource_types.id;
+
+
+--
+-- Name: resources; Type: TABLE; Schema: public; Owner: linaart
+--
+
+CREATE TABLE public.resources (
+    id integer NOT NULL,
+    name text NOT NULL,
+    current_speed numeric NOT NULL,
+    type_id integer
+);
+
+
+ALTER TABLE public.resources OWNER TO linaart;
+
+--
+-- Name: resources_id_seq; Type: SEQUENCE; Schema: public; Owner: linaart
+--
+
+CREATE SEQUENCE public.resources_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.resources_id_seq OWNER TO linaart;
+
+--
+-- Name: resources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: linaart
+--
+
+ALTER SEQUENCE public.resources_id_seq OWNED BY public.resources.id;
+
+
+--
+-- Name: resource_types id; Type: DEFAULT; Schema: public; Owner: linaart
+--
+
+ALTER TABLE ONLY public.resource_types ALTER COLUMN id SET DEFAULT nextval('public.resource_types_id_seq'::regclass);
+
+
+--
+-- Name: resources id; Type: DEFAULT; Schema: public; Owner: linaart
+--
+
+ALTER TABLE ONLY public.resources ALTER COLUMN id SET DEFAULT nextval('public.resources_id_seq'::regclass);
+
+
+--
+-- Data for Name: resource_types; Type: TABLE DATA; Schema: public; Owner: linaart
+--
+
+COPY public.resource_types (id, name, max_speed) FROM stdin;
+1	Самосвал	80
+2	Экскаватор	40
+\.
+
+
+--
+-- Data for Name: resources; Type: TABLE DATA; Schema: public; Owner: linaart
+--
+
+COPY public.resources (id, name, current_speed, type_id) FROM stdin;
+1	C101	63	1
+2	C102	85	1
+3	Э103	60	2
+4	Э104	0	2
+\.
+
+
+--
+-- Name: resource_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: linaart
+--
+
+SELECT pg_catalog.setval('public.resource_types_id_seq', 2, true);
+
+
+--
+-- Name: resources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: linaart
+--
+
+SELECT pg_catalog.setval('public.resources_id_seq', 4, true);
+
+
+--
+-- Name: resource_types resource_types_pkey; Type: CONSTRAINT; Schema: public; Owner: linaart
+--
+
+ALTER TABLE ONLY public.resource_types
+    ADD CONSTRAINT resource_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resources resources_pkey; Type: CONSTRAINT; Schema: public; Owner: linaart
+--
+
+ALTER TABLE ONLY public.resources
+    ADD CONSTRAINT resources_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: resources resources_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: linaart
+--
+
+ALTER TABLE ONLY public.resources
+    ADD CONSTRAINT resources_type_id_fkey FOREIGN KEY (type_id) REFERENCES public.resource_types(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
